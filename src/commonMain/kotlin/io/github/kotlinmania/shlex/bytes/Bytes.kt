@@ -30,11 +30,23 @@ private const val ASCII_MASK: Int = 0xFF
 private fun byteAt(bytes: ByteArray, i: Int): Int = bytes[i].toInt() and ASCII_MASK
 
 /**
+ * Rust `Iterator::Item` for [Shlex].
+ *
+ * This is a Kotlin transliteration of Rust associated types in `impl Iterator for bytes::Shlex`.
+ */
+public typealias Item = ByteArray
+
+/**
  * An iterator that takes an input byte string and splits it into the words using the same syntax as
  * the POSIX shell.
  */
 public class Shlex(private val inBytes: ByteArray) : Iterator<ByteArray> {
     private var index: Int = 0
+
+    public companion object {
+        /** Create a new [Shlex] with the given input bytes. */
+        public fun new(inBytes: ByteArray): Shlex = Shlex(inBytes)
+    }
 
     /** The number of newlines read so far, plus one. */
     public var lineNo: Int = 1
@@ -190,6 +202,11 @@ public data class Quoter(
     private val allowNul: Boolean = false,
     // (Future extension point: additional options.)
 ) {
+    public companion object {
+        /** Create a new [Quoter] with default settings. */
+        public fun new(): Quoter = Quoter()
+    }
+
     /**
      * Set whether to allow nul bytes. By default they are not allowed and will result in an error
      * of [QuoteError.Nul].

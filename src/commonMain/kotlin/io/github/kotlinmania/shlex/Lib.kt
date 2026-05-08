@@ -10,20 +10,6 @@ import io.github.kotlinmania.shlex.bytes.Quoter as BytesQuoter
 // copied, modified, or distributed except according to those terms.
 
 /**
- * Rust `Iterator::Item` for [Shlex].
- *
- * This is a Kotlin transliteration of Rust associated types in `impl Iterator for Shlex`.
- */
-public typealias Item = String
-
-/**
- * Rust `Deref::Target` for [Shlex].
- *
- * This is a Kotlin transliteration of Rust associated types in `impl Deref for Shlex`.
- */
-public typealias Target = BytesShlex
-
-/**
  * Parse strings like, and escape strings for, POSIX shells.
  *
  * Same idea as (but implementation not directly based on) the Python shlex module.

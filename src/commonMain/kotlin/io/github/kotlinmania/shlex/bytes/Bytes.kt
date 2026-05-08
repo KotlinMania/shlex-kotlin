@@ -30,13 +30,6 @@ private const val ASCII_MASK: Int = 0xFF
 private fun byteAt(bytes: ByteArray, i: Int): Int = bytes[i].toInt() and ASCII_MASK
 
 /**
- * Rust `Iterator::Item` for [Shlex].
- *
- * This is a Kotlin transliteration of Rust associated types in `impl Iterator for bytes::Shlex`.
- */
-public typealias Item = ByteArray
-
-/**
  * An iterator that takes an input byte string and splits it into the words using the same syntax as
  * the POSIX shell.
  */

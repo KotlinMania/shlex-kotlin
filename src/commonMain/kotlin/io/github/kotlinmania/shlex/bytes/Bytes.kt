@@ -193,7 +193,7 @@ public fun split(inBytes: ByteArray): List<ByteArray>? {
  */
 public data class Quoter(
     private val allowNul: Boolean = false,
-    // (Future extension point: additional options.)
+    // TODO: more options
 ) {
     public companion object {
         /** Create a new [Quoter] with default settings. */
@@ -280,7 +280,7 @@ private enum class QuotingStrategy {
 
     /** Double quotes, potentially with backslash escapes. */
     DoubleQuoted,
-    // (Future strategies could include the shell dollar-quoting and printf-substitution styles.)
+    // TODO: add $'xxx' and "$(printf 'xxx')" styles
 }
 
 /** Is this ASCII byte okay to emit unquoted? */

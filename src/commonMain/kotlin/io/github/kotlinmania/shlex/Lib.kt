@@ -48,14 +48,18 @@ public class Shlex(inStr: String) : Iterator<String> {
     private val inner: BytesShlex = BytesShlex(inStr.encodeToByteArray())
 
     public companion object {
-        /** Create a new [Shlex] with the given input string. */
         public fun new(inStr: String): Shlex = Shlex(inStr)
     }
 
-    /** The number of newlines read so far, plus one. (Forwarded from the bytes [Shlex].) */
+    /** The number of newlines read so far, plus one. */
     public val lineNo: Int get() = inner.lineNo
 
-    /** Whether the underlying iterator hit an error. (Forwarded from the bytes [Shlex].) */
+    /**
+     * An input string is erroneous if it ends while inside a quotation or right after an
+     * unescaped backslash. Since [Iterator] does not have a mechanism to return an error, if that
+     * happens, [Shlex] just throws out the last token, ends the iteration, and sets [hadError] to
+     * `true`; best to check it after you are done iterating.
+     */
     public var hadError: Boolean
         get() = inner.hadError
         set(value) {
@@ -69,18 +73,8 @@ public class Shlex(inStr: String) : Iterator<String> {
         return inner.next().decodeToString()
     }
 
-    /**
-     * Kotlin equivalent of Rust `Deref` for this wrapper.
-     *
-     * This exists to preserve the Rust surface-area mapping for port-lint and AST-distance tooling.
-     */
     public fun deref(): BytesShlex = inner
 
-    /**
-     * Kotlin equivalent of Rust `DerefMut` for this wrapper.
-     *
-     * Kotlin does not have mutable references; this simply returns the underlying [BytesShlex].
-     */
     public fun derefMut(): BytesShlex = inner
 }
 
@@ -117,7 +111,6 @@ public sealed class QuoteError(message: String) : Exception(message) {
      */
     public object Nul : QuoteError("cannot shell-quote string containing nul byte")
 
-    /** Kotlin equivalent of Rust `Display::fmt` for this error. */
     public fun fmt(): String = message ?: toString()
 
     override fun toString(): String = message ?: super.toString()
@@ -154,17 +147,14 @@ public data class Quoter(private val inner: BytesQuoter = BytesQuoter()) {
         return inner.quote(inStr.encodeToByteArray()).map { it.decodeToString() }
     }
 
-    /** Convert this [Quoter] to its bytes-level equivalent. */
     public fun toBytesQuoter(): BytesQuoter = inner
 
     public companion object {
         /** Create a new [Quoter] with default settings. */
         public fun new(): Quoter = Quoter()
 
-        /** Wrap a [io.github.kotlinmania.shlex.bytes.Quoter] as a string [Quoter]. */
         public fun fromBytesQuoter(inner: BytesQuoter): Quoter = Quoter(inner)
 
-        /** Rust `From<bytes::Quoter> for Quoter` transliteration. */
         public fun from(inner: BytesQuoter): Quoter = fromBytesQuoter(inner)
     }
 }

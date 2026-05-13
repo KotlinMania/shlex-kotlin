@@ -14,7 +14,6 @@ import io.github.kotlinmania.shlex.QuoteError
  *
  * The string equivalent is [io.github.kotlinmania.shlex.Quoter].
  */
-// Lifted from upstream attributes: #[derive(Default, Debug, Clone)].
 class Quoter(
     private val allowNul: Boolean = false,
     // TODO: more options

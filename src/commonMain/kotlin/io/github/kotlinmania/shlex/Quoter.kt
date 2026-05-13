@@ -14,7 +14,6 @@ import io.github.kotlinmania.shlex.bytes.Quoter as BytesQuoter
  *
  * The bytes equivalent is [io.github.kotlinmania.shlex.bytes.Quoter].
  */
-// Lifted from upstream attributes: #[derive(Default, Debug, Clone)].
 class Quoter private constructor(private val inner: BytesQuoter) {
     /** Create a new [Quoter] with default settings. */
     constructor() : this(BytesQuoter())
@@ -29,22 +28,20 @@ class Quoter private constructor(private val inner: BytesQuoter) {
      */
     fun join(words: Iterable<String>): Result<String> {
         return inner.join(words.map { it.encodeToByteArray() })
-            // Safety: given valid UTF-8, bytes::join() will always return valid UTF-8.
             .map { it.decodeToString() }
     }
 
     /** Given a single word, return a string suitable to encode it as a shell argument. */
     fun quote(inStr: String): Result<String> {
         return inner.quote(inStr.encodeToByteArray())
-            // Safety: given valid UTF-8, bytes::quote() will always return valid UTF-8.
             .map { it.decodeToString() }
     }
 
-    /** Companion conversion: get the underlying bytes-side [BytesQuoter]. */
+    /** Returns the underlying [io.github.kotlinmania.shlex.bytes.Quoter]. */
     fun toBytesQuoter(): BytesQuoter = inner
 
     companion object {
-        /** Lifted from upstream: `impl From<bytes::Quoter> for Quoter`. */
+        /** Creates a [Quoter] from the given [BytesQuoter]. */
         fun fromBytesQuoter(inner: BytesQuoter): Quoter = Quoter(inner)
     }
 }

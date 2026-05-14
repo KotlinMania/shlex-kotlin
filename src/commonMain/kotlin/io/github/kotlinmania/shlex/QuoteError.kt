@@ -20,9 +20,6 @@ package io.github.kotlinmania.shlex
  * will be mitigated by adding corresponding [QuoteError] variants that *are* enabled by
  * default.
  */
-// Lifted from upstream attributes: #[non_exhaustive], #[derive(Debug, Clone, Copy, PartialEq, Eq,
-// PartialOrd, Ord, Hash)].  Made a Throwable subtype so the failures flow through Kotlin's
-// `Result<T>` directly (kotlin.Result requires a Throwable failure).
 sealed class QuoteError(override val message: String) : Throwable(message) {
     /**
      * The input contained a nul byte.  In most cases, shells fundamentally cannot handle strings

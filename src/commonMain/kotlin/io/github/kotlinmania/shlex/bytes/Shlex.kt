@@ -6,16 +6,16 @@ package io.github.kotlinmania.shlex.bytes
 // the MIT license <https://opensource.org/licenses/MIT>, at your option. This file may not be
 // copied, modified, or distributed except according to those terms.
 
-//! [Shlex] and friends for byte strings.
-//!
-//! This is used internally by the [outer package][io.github.kotlinmania.shlex], and may be more
-//! convenient if you are working with byte arrays (`ByteArray`) or types that are
-//! wrappers around bytes.
-//!
-//! On Unix, a byte-oriented file system path can be quoted directly with [quote]; for example,
-//! a path that contains `0x80` (which is invalid in UTF-8) like `a\x80b c` quotes to `'a\x80b c'`.
-//!
-//! (On Windows, paths use 16 bit wide characters so this byte-oriented API will not work.)
+// [Shlex] and friends for byte strings.
+//
+// This is used internally by the [outer package][io.github.kotlinmania.shlex], and may be more
+// convenient if you are working with byte arrays (`ByteArray`) or types that are
+// wrappers around bytes.
+//
+// On Unix, a byte-oriented file system path can be quoted directly with [quote]; for example,
+// a path that contains `0x80` (which is invalid in UTF-8) like `a\x80b c` quotes to `'a\x80b c'`.
+//
+// (On Windows, paths use 16 bit wide characters so this byte-oriented API will not work.)
 
 /**
  * An iterator that takes an input byte string and splits it into the words using the same syntax as

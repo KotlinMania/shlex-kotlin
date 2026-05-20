@@ -5,13 +5,13 @@ Based on AST analysis, here are the concrete next steps.
 ## Summary
 
 - **Files Present:** 2/2 (100.0%)
-- **Function parity:** 34/40 matched (target 51) — 85.0%
+- **Function parity:** 37/40 matched (target 57) — 92.5%
 - **Class/type parity:** 6/9 matched (target 10) — 66.7%
-- **Combined symbol parity:** 40/49 matched (target 61) — 81.6%
-- **Average inline-code cosine:** 0.54 (function body across 2 matched files)
+- **Combined symbol parity:** 43/49 matched (target 67) — 87.8%
+- **Average inline-code cosine:** 0.60 (function body across 2 matched files)
 - **Average documentation cosine:** 0.64 (doc text across 2 matched files)
 - **Cheat-zeroed Files:** 0
-- **Critical Issues:** 2 files with <0.60 function similarity
+- **Critical Issues:** 1 files with <0.60 function similarity
 
 ## Priority 1: Fix Incomplete High-Dependency Files
 
@@ -30,11 +30,11 @@ Every matched file is listed below with function and type symbol parity.
 ### 1. lib
 
 - **Target:** `shlex.Quote`
-- **Similarity:** 0.51
+- **Similarity:** 0.60
 - **Dependents:** 0
-- **Priority Score:** 72204.9
-- **Functions:** 12/17 matched (target 22)
-- **Missing functions:** `new`, `deref`, `deref_mut`, `fmt`, `from`
+- **Priority Score:** 52204.0
+- **Functions:** 14/17 matched (target 26)
+- **Missing functions:** `deref`, `deref_mut`, `fmt`
 - **Types:** 3/5 matched (target 6)
 - **Missing types:** `Item`, `Target`
 - **Tests:** 5/5 matched
@@ -42,11 +42,11 @@ Every matched file is listed below with function and type symbol parity.
 ### 2. bytes
 
 - **Target:** `bytes.Shlex`
-- **Similarity:** 0.57
+- **Similarity:** 0.60
 - **Dependents:** 0
-- **Priority Score:** 22704.3
-- **Functions:** 22/23 matched (target 29)
-- **Missing functions:** `new`
+- **Priority Score:** 12704.0
+- **Functions:** 23/23 matched (target 31)
+- **Missing functions:** _none_
 - **Types:** 3/4 matched
 - **Missing types:** `Item`
 - **Tests:** 5/5 matched

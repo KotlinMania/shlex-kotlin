@@ -149,6 +149,11 @@ class Shlex(private val inBytes: ByteArray) : Iterator<ByteArray> {
         peeked = null
         return r
     }
+
+    companion object {
+        /** Create a new [Shlex] over [inBytes]. */
+        fun new(inBytes: ByteArray): Shlex = Shlex(inBytes)
+    }
 }
 
 /**

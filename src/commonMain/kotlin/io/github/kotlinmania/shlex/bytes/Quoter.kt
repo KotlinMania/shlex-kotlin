@@ -84,6 +84,11 @@ class Quoter(
         }
         return Result.success(out.toByteArray())
     }
+
+    companion object {
+        /** Create a new [Quoter] with default settings. */
+        fun new(): Quoter = Quoter()
+    }
 }
 
 /**
@@ -91,7 +96,7 @@ class Quoter(
  * quoting words when necessary. Consecutive words will be separated by a single space.
  *
  * Uses default settings except that nul bytes are passed through, which may be dangerous (see
-     * the upstream quoting warning's nul bytes section), leading to this function being deprecated.
+ * the upstream quoting warning's nul bytes section), leading to this function being deprecated.
  *
  * Equivalent to `Quoter().allowNul(true).join(words).getOrThrow()`.
  *
@@ -123,7 +128,7 @@ fun tryJoin(words: Iterable<ByteArray>): Result<ByteArray> = Quoter().join(words
  * Given a single word, return a string suitable to encode it as a shell argument.
  *
  * Uses default settings except that nul bytes are passed through, which may be dangerous (see
-     * the upstream quoting warning's nul bytes section), leading to this function being deprecated.
+ * the upstream quoting warning's nul bytes section), leading to this function being deprecated.
  *
  * Equivalent to `Quoter().allowNul(true).quote(inBytes).getOrThrow()`.
  *

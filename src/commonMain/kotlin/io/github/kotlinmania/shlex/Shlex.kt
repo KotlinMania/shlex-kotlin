@@ -56,4 +56,12 @@ class Shlex(inStr: String) : Iterator<String> {
         val byteWord = inner.next()
         return byteWord.decodeToString()
     }
+
+    /** Returns the underlying byte iterator. */
+    fun toBytesShlex(): BytesShlex = inner
+
+    companion object {
+        /** Create a new [Shlex] over [inStr]. */
+        fun new(inStr: String): Shlex = Shlex(inStr)
+    }
 }

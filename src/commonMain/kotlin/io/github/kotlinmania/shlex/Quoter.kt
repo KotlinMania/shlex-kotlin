@@ -41,7 +41,13 @@ class Quoter private constructor(private val inner: BytesQuoter) {
     fun toBytesQuoter(): BytesQuoter = inner
 
     companion object {
+        /** Create a new [Quoter] with default settings. */
+        fun new(): Quoter = Quoter()
+
         /** Creates a [Quoter] from the given [BytesQuoter]. */
-        fun fromBytesQuoter(inner: BytesQuoter): Quoter = Quoter(inner)
+        fun from(inner: BytesQuoter): Quoter = Quoter(inner)
+
+        /** Creates a [Quoter] from the given [BytesQuoter]. */
+        fun fromBytesQuoter(inner: BytesQuoter): Quoter = from(inner)
     }
 }

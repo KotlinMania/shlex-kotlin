@@ -1,6 +1,6 @@
 # port-lint Proposed Changes
 
-**Generated:** 2026-05-19
+**Generated:** 2026-05-20
 **Source:** tmp/shlex/src
 **Target:** src/commonMain/kotlin/io/github/kotlinmania/shlex
 

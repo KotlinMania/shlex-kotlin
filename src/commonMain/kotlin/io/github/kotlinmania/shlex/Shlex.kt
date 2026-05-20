@@ -1,4 +1,4 @@
-// port-lint: source src/lib.rs
+// port-lint: source lib.rs
 package io.github.kotlinmania.shlex
 
 // Copyright 2015 Nicholas Allegra (comex).
@@ -26,7 +26,7 @@ package io.github.kotlinmania.shlex
 // command injection.
 //
 // For more information, and for information about more minor issues, please see
-// `tmp/shlex/src/quoting_warning.md` in the upstream tree.
+// the upstream quoting warning document.
 //
 // ## Compatibility
 //

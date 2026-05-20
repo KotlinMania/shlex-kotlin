@@ -1,4 +1,4 @@
-// port-lint: source src/bytes.rs
+// port-lint: source bytes.rs
 package io.github.kotlinmania.shlex.bytes
 
 // Copyright 2015 Nicholas Allegra (comex).
@@ -18,7 +18,7 @@ internal enum class QuotingStrategy {
 
     /** Double quotes, potentially with backslash escapes. */
     DoubleQuoted,
-    // TODO: add $'xxx' and "$(printf 'xxx')" styles
+    // Future versions may add ANSI-C and printf quoting styles.
 }
 
 /** Is this ASCII byte okay to emit unquoted? */
@@ -31,7 +31,7 @@ internal fun unquotedOk(c: Byte): Boolean {
         -> true
 
         // Non-allowed characters:
-        // From POSIX https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html
+        // From the POSIX shell command language specification.
         // "The application shall quote the following characters if they are to represent themselves:"
         '|', '&', ';', '<', '>', '(', ')', '$', '`', '\\', '"', '\'', ' ', '\t', '\n',
         // "and the following may need to be quoted under certain circumstances[..]:"
@@ -41,18 +41,18 @@ internal fun unquotedOk(c: Byte): Boolean {
         '{', '}',
         // Also quote comma, just to be safe in the extremely odd case that the user of this crate
         // is intentionally placing a quoted string inside a brace expansion, e.g.:
-        //     "echo foo{a,b,${shlex::quote(some_str)}}"
+        //     "echo foo{a,b,${quote(someStr)}}"
         ',',
         // '\r' is allowed in a word by all real shells I tested, but is treated as a word
         // separator by Python `shlex` and might be translated to '\n' in interactive mode.
         '\r',
-        // '!' and '^' are treated specially in interactive mode; see quoting_warning.
+        // '!' and '^' are treated specially in interactive mode; see the quoting warning.
         '!', '^',
         // Nul bytes and control characters.
         in '\u0000'..'\u001f', '\u007f',
         -> false
 
-        else -> false // unreachable; unquotedOk is only called for 0..128. Non-ASCII bytes are
+        else -> false // Not reachable; unquotedOk is only called for 0..128. Non-ASCII bytes are
         // handled separately in quotingStrategy.
     }
     // Note: The logic cited above for quoting comma might suggest that `..` should also be quoted,
@@ -90,7 +90,7 @@ internal fun singleQuotedOk(c: Byte): Boolean = when (c) {
     // No single quotes in single quotes.
     '\''.code.toByte() -> false
     // To work around a Bash bug, ^ is only allowed right after an opening single quote; see
-    // quoting_warning.
+    // the quoting warning.
     '^'.code.toByte() -> false
     // Backslashes in single quotes are literal according to POSIX, but Fish treats them as an
     // escape character.  Ban them.  Fish doesn't aim to be POSIX-compatible, but we *can*
@@ -104,7 +104,7 @@ internal fun doubleQuotedOk(c: Byte): Boolean = when (c) {
     // Work around Python `shlex` bug where parsing "\`" and "\$" doesn't strip the
     // backslash, even though POSIX requires it.
     '`'.code.toByte(), '$'.code.toByte() -> false
-    // '!' and '^' are treated specially in interactive mode; see quoting_warning.
+    // '!' and '^' are treated specially in interactive mode; see the quoting warning.
     '!'.code.toByte(), '^'.code.toByte() -> false
     else -> true
 }
@@ -126,7 +126,7 @@ internal fun quotingStrategy(inBytes: ByteArray): Pair<Int, QuotingStrategy> {
 
     if (inBytes[0] == '^'.code.toByte()) {
         // To work around a Bash bug, ^ is only allowed right after an opening single quote; see
-        // quoting_warning.
+        // the quoting warning.
         prevOk = singleQuotedOkBit
         i = 1
     }
@@ -136,7 +136,7 @@ internal fun quotingStrategy(inBytes: ByteArray): Pair<Int, QuotingStrategy> {
         var curOk = prevOk
 
         if ((c.toInt() and 0xFF) >= 0x80) {
-            // Normally, non-ASCII characters shouldn't require quoting, but see quoting_warning.md
+            // Normally, non-ASCII characters shouldn't require quoting, but see the quoting warning
             // about \xa0.  For now, just treat all non-ASCII characters as requiring quotes.  This
             // also ensures things are safe in the off-chance that you're in a legacy 8-bit locale
             // that has additional characters satisfying `isblank`.
@@ -171,7 +171,7 @@ internal fun quotingStrategy(inBytes: ByteArray): Pair<Int, QuotingStrategy> {
         prevOk and doubleQuotedOkBit != 0 -> QuotingStrategy.DoubleQuoted
         else -> error("unreachable")
     }
-    check(i > 0) // debug_assert!(i > 0)
+    check(i > 0) // Upstream invariant: returned size is nonzero.
     return i to strategy
 }
 

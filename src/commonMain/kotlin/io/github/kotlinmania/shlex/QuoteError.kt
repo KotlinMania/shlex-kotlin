@@ -1,4 +1,4 @@
-// port-lint: source src/lib.rs
+// port-lint: source lib.rs
 package io.github.kotlinmania.shlex
 
 // Copyright 2015 Nicholas Allegra (comex).
@@ -16,7 +16,7 @@ package io.github.kotlinmania.shlex
  * [Quoter] options.
  *
  * ...In theory.  In the unlikely event that additional classes of inputs are discovered that,
- * like nul bytes, are fundamentally unsafe to quote even for non-interactive shells, the risk
+ * like nul bytes, are fundamentally dangerous to quote even for non-interactive shells, the risk
  * will be mitigated by adding corresponding [QuoteError] variants that *are* enabled by
  * default.
  */
@@ -24,7 +24,7 @@ sealed class QuoteError(override val message: String) : Throwable(message) {
     /**
      * The input contained a nul byte.  In most cases, shells fundamentally cannot handle strings
      * containing nul bytes, no matter how they are quoted.  But if you're sure you can handle nul
-     * bytes, you can call `allowNul(true)` on the [Quoter] to let them pass through.
+     * bytes, you can call `allowNul(true)` on the [Quoter] to allow them through.
      */
     data object Nul : QuoteError("cannot shell-quote string containing nul byte")
 }

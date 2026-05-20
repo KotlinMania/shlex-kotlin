@@ -1,4 +1,4 @@
-// port-lint: source src/lib.rs
+// port-lint: source lib.rs
 package io.github.kotlinmania.shlex
 
 import kotlin.test.Test
@@ -101,7 +101,7 @@ class ShlexTest {
 
     @Test
     fun testJoin() {
-        // Mirrors upstream test_join, rewritten to use tryJoin so that the deprecated
+        // Mirrors the upstream join test, rewritten to use tryJoin so that the deprecated
         // convenience function `join` is not invoked in tests (which would trip
         // -Werror=deprecation).
         assertEquals("", tryJoin(emptyList()).getOrThrow())

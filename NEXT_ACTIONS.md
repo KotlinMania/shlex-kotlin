@@ -5,11 +5,11 @@ Based on AST analysis, here are the concrete next steps.
 ## Summary
 
 - **Files Present:** 2/2 (100.0%)
-- **Function parity:** 34/40 matched (target 47) — 85.0%
-- **Class/type parity:** 6/9 matched (target 9) — 66.7%
-- **Combined symbol parity:** 40/49 matched (target 56) — 81.6%
-- **Average inline-code cosine:** 0.52 (function body across 2 matched files)
-- **Average documentation cosine:** 0.90 (doc text across 2 matched files)
+- **Function parity:** 34/40 matched (target 51) — 85.0%
+- **Class/type parity:** 6/9 matched (target 10) — 66.7%
+- **Combined symbol parity:** 40/49 matched (target 61) — 81.6%
+- **Average inline-code cosine:** 0.54 (function body across 2 matched files)
+- **Average documentation cosine:** 0.64 (doc text across 2 matched files)
 - **Cheat-zeroed Files:** 0
 - **Critical Issues:** 2 files with <0.60 function similarity
 
@@ -29,23 +29,23 @@ Every matched file is listed below with function and type symbol parity.
 
 ### 1. lib
 
-- **Target:** `shlex.Lib`
-- **Similarity:** 0.49
+- **Target:** `shlex.Quote`
+- **Similarity:** 0.51
 - **Dependents:** 0
-- **Priority Score:** 72205.1
-- **Functions:** 12/17 matched
+- **Priority Score:** 72204.9
+- **Functions:** 12/17 matched (target 22)
 - **Missing functions:** `new`, `deref`, `deref_mut`, `fmt`, `from`
-- **Types:** 3/5 matched
+- **Types:** 3/5 matched (target 6)
 - **Missing types:** `Item`, `Target`
 - **Tests:** 5/5 matched
 
 ### 2. bytes
 
-- **Target:** `bytes.Bytes`
-- **Similarity:** 0.56
+- **Target:** `bytes.Shlex`
+- **Similarity:** 0.57
 - **Dependents:** 0
-- **Priority Score:** 22704.4
-- **Functions:** 22/23 matched (target 30)
+- **Priority Score:** 22704.3
+- **Functions:** 22/23 matched (target 29)
 - **Missing functions:** `new`
 - **Types:** 3/4 matched
 - **Missing types:** `Item`

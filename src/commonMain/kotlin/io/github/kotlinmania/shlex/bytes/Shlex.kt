@@ -1,4 +1,4 @@
-// port-lint: source src/bytes.rs
+// port-lint: source bytes.rs
 package io.github.kotlinmania.shlex.bytes
 
 // Copyright 2015 Nicholas Allegra (comex).

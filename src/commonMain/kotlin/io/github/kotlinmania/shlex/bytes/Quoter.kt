@@ -1,4 +1,4 @@
-// port-lint: source src/bytes.rs
+// port-lint: source bytes.rs
 package io.github.kotlinmania.shlex.bytes
 
 // Copyright 2015 Nicholas Allegra (comex).
@@ -16,7 +16,7 @@ import io.github.kotlinmania.shlex.QuoteError
  */
 class Quoter(
     private val allowNul: Boolean = false,
-    // TODO: more options
+    // Future versions may add more options.
 ) {
     /** Set whether to allow nul bytes.  By default they are not allowed and will result in an
      *  error of [QuoteError.Nul]. */
@@ -91,7 +91,7 @@ class Quoter(
  * quoting words when necessary. Consecutive words will be separated by a single space.
  *
  * Uses default settings except that nul bytes are passed through, which may be dangerous (see
- * `quoting_warning#nul-bytes`), leading to this function being deprecated.
+     * the upstream quoting warning's nul bytes section), leading to this function being deprecated.
  *
  * Equivalent to `Quoter().allowNul(true).join(words).getOrThrow()`.
  *
@@ -123,7 +123,7 @@ fun tryJoin(words: Iterable<ByteArray>): Result<ByteArray> = Quoter().join(words
  * Given a single word, return a string suitable to encode it as a shell argument.
  *
  * Uses default settings except that nul bytes are passed through, which may be dangerous (see
- * `quoting_warning#nul-bytes`), leading to this function being deprecated.
+     * the upstream quoting warning's nul bytes section), leading to this function being deprecated.
  *
  * Equivalent to `Quoter().allowNul(true).quote(inBytes).getOrThrow()`.
  *

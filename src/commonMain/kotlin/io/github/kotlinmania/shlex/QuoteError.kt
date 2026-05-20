@@ -21,6 +21,10 @@ package io.github.kotlinmania.shlex
  * default.
  */
 sealed class QuoteError(override val message: String) : Throwable(message) {
+    fun fmt(): String = message
+
+    override fun toString(): String = fmt()
+
     /**
      * The input contained a nul byte.  In most cases, shells fundamentally cannot handle strings
      * containing nul bytes, no matter how they are quoted.  But if you're sure you can handle nul

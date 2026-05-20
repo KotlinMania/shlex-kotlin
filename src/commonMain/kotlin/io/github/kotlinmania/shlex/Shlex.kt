@@ -38,14 +38,20 @@ package io.github.kotlinmania.shlex
 
 import io.github.kotlinmania.shlex.bytes.Shlex as BytesShlex
 
+/** The item yielded by [Shlex]. */
+typealias Item = String
+
+/** The byte-level iterator exposed by [Shlex.deref] and [Shlex.derefMut]. */
+typealias Target = BytesShlex
+
 /**
  * An iterator that takes an input string and splits it into the words using the same syntax as
  * the POSIX shell.
  *
  * See [io.github.kotlinmania.shlex.bytes.Shlex].
  */
-class Shlex(inStr: String) : Iterator<String> {
-    private val inner: BytesShlex = BytesShlex(inStr.encodeToByteArray())
+class Shlex(inStr: String) : Iterator<Item> {
+    private val inner: Target = BytesShlex(inStr.encodeToByteArray())
 
     val lineNo: Int get() = inner.lineNo
     val hadError: Boolean get() = inner.hadError
@@ -57,8 +63,12 @@ class Shlex(inStr: String) : Iterator<String> {
         return byteWord.decodeToString()
     }
 
+    fun deref(): Target = inner
+
+    fun derefMut(): Target = inner
+
     /** Returns the underlying byte iterator. */
-    fun toBytesShlex(): BytesShlex = inner
+    fun toBytesShlex(): Target = deref()
 
     companion object {
         /** Create a new [Shlex] over [inStr]. */

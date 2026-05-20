@@ -5,13 +5,13 @@ Based on AST analysis, here are the concrete next steps.
 ## Summary
 
 - **Files Present:** 2/2 (100.0%)
-- **Function parity:** 37/40 matched (target 57) — 92.5%
-- **Class/type parity:** 6/9 matched (target 10) — 66.7%
-- **Combined symbol parity:** 43/49 matched (target 67) — 87.8%
-- **Average inline-code cosine:** 0.60 (function body across 2 matched files)
+- **Function parity:** 40/40 matched (target 61) — 100.0%
+- **Class/type parity:** 9/9 matched (target 13) — 100.0%
+- **Combined symbol parity:** 49/49 matched (target 74) — 100.0%
+- **Average inline-code cosine:** 0.62 (function body across 2 matched files)
 - **Average documentation cosine:** 0.64 (doc text across 2 matched files)
 - **Cheat-zeroed Files:** 0
-- **Critical Issues:** 1 files with <0.60 function similarity
+- **Critical Issues:** 0 files with <0.60 function similarity
 
 ## Priority 1: Fix Incomplete High-Dependency Files
 
@@ -27,28 +27,28 @@ No missing high-value files detected.
 
 Every matched file is listed below with function and type symbol parity.
 
-### 1. lib
-
-- **Target:** `shlex.Quote`
-- **Similarity:** 0.60
-- **Dependents:** 0
-- **Priority Score:** 52204.0
-- **Functions:** 14/17 matched (target 26)
-- **Missing functions:** `deref`, `deref_mut`, `fmt`
-- **Types:** 3/5 matched (target 6)
-- **Missing types:** `Item`, `Target`
-- **Tests:** 5/5 matched
-
-### 2. bytes
+### 1. bytes
 
 - **Target:** `bytes.Shlex`
 - **Similarity:** 0.60
 - **Dependents:** 0
-- **Priority Score:** 12704.0
+- **Priority Score:** 2704.0
 - **Functions:** 23/23 matched (target 31)
 - **Missing functions:** _none_
-- **Types:** 3/4 matched
-- **Missing types:** `Item`
+- **Types:** 4/4 matched (target 5)
+- **Missing types:** _none_
+- **Tests:** 5/5 matched
+
+### 2. lib
+
+- **Target:** `shlex.Quote`
+- **Similarity:** 0.63
+- **Dependents:** 0
+- **Priority Score:** 2203.7
+- **Functions:** 17/17 matched (target 30)
+- **Missing functions:** _none_
+- **Types:** 5/5 matched (target 8)
+- **Missing types:** _none_
 - **Tests:** 5/5 matched
 
 ## Success Criteria

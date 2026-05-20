@@ -17,11 +17,14 @@ package io.github.kotlinmania.shlex.bytes
 //
 // (On Windows, paths use 16 bit wide characters so this byte-oriented API will not work.)
 
+/** The item yielded by [Shlex]. */
+typealias Item = ByteArray
+
 /**
  * An iterator that takes an input byte string and splits it into the words using the same syntax as
  * the POSIX shell.
  */
-class Shlex(private val inBytes: ByteArray) : Iterator<ByteArray> {
+class Shlex(private val inBytes: ByteArray) : Iterator<Item> {
     private var pos: Int = 0
 
     /** The number of newlines read so far, plus one. */
@@ -35,10 +38,10 @@ class Shlex(private val inBytes: ByteArray) : Iterator<ByteArray> {
      */
     var hadError: Boolean = false
 
-    private var peeked: ByteArray? = null
+    private var peeked: Item? = null
     private var exhausted: Boolean = false
 
-    private fun parseWord(initial: Byte): ByteArray? {
+    private fun parseWord(initial: Byte): Item? {
         var ch = initial
         val result: MutableList<Byte> = mutableListOf()
         while (true) {
@@ -110,7 +113,7 @@ class Shlex(private val inBytes: ByteArray) : Iterator<ByteArray> {
         return res
     }
 
-    private fun computeNext(): ByteArray? {
+    private fun computeNext(): Item? {
         var ch = nextChar() ?: return null
         // skip initial whitespace
         while (true) {
@@ -143,7 +146,7 @@ class Shlex(private val inBytes: ByteArray) : Iterator<ByteArray> {
         return true
     }
 
-    override fun next(): ByteArray {
+    override fun next(): Item {
         if (!hasNext()) throw NoSuchElementException()
         val r = peeked!!
         peeked = null

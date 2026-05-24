@@ -101,14 +101,12 @@ class LibTest {
         assertTrue(ok)
     }
 
-    // Suppression mirrors the upstream allow-deprecated attribute on this test.
-    @Suppress("DEPRECATION")
     @Test
     fun testJoin() {
-        assertEquals("", join(listOf()))
-        assertEquals("''", join(listOf("")))
-        assertEquals("a b", join(listOf("a", "b")))
-        assertEquals("'foo bar' baz", join(listOf("foo bar", "baz")))
+        assertEquals("", tryJoin(emptyList()).getOrThrow())
+        assertEquals("''", tryJoin(listOf("")).getOrThrow())
+        assertEquals("a b", tryJoin(listOf("a", "b")).getOrThrow())
+        assertEquals("'foo bar' baz", tryJoin(listOf("foo bar", "baz")).getOrThrow())
     }
 
     @Test

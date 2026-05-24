@@ -114,4 +114,11 @@ class LibTest {
         assertEquals(QuoteError.Nul, tryJoin(listOf("\u0000")).exceptionOrNull())
         assertEquals(QuoteError.Nul, tryQuote("\u0000").exceptionOrNull())
     }
+
+    @Test
+    fun testAllowNul() {
+        val q = Quoter().allowNul(true)
+        assertEquals("'\u0000'", q.quote("\u0000").getOrThrow())
+        assertEquals("'\u0000'", q.join(listOf("\u0000")).getOrThrow())
+    }
 }

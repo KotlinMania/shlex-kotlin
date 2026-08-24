@@ -1,8 +1,11 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 6.0
 import PackageDescription
 
 let package = Package(
     name: "SwiftTestHarness",
+    platforms: [
+        .macOS(.v14)
+    ],
     dependencies: [
         .package(name: "Shlex", path: "../build/SPMPackage/macosArm64/Debug")
     ],
@@ -29,6 +32,9 @@ let package = Package(
                 .unsafeFlags([
                     "-L", "../build/swift-test",
                     "-lShlex",
+                    "-F", "/Library/Developer/CommandLineTools/Library/Frameworks",
+                    "-F", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks",
+                    "-framework", "Testing",
                 ]),
             ]
         ),

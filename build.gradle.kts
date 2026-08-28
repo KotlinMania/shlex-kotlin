@@ -525,8 +525,15 @@ mavenPublishing {
 }
 
 // ============================================================================
-// Tasks
-// ============================================================================
+// Exact test lifecycle task. Without this, ./gradlew test is ambiguous between
+// Android test task names. This runs commonTest through the KMP allTests
+// lifecycle and adds the Android host + Swift Export parity tests.
+tasks.register("test") {
+    group = "verification"
+    description = "Runs the commonTest-backed KMP suite, Android host tests, and Swift Export smoke test."
+    dependsOn("hostTests")
+    dependsOn("swiftExportSmokeTest")
+}
 
 tasks.register("setupAndroidSdk") {
     group = "setup"

@@ -7,28 +7,29 @@ import kotlin.test.assertTrue
 
 // `static SPLIT_TEST_ITEMS` from upstream — pairs of (input, expected output).
 // `null` corresponds to upstream's `None` (an erroneous input that `split` rejects).
-private val SPLIT_TEST_ITEMS: Array<Pair<String, List<String>?>> = arrayOf(
-    "foo\$baz" to listOf("foo\$baz"),
-    "foo baz" to listOf("foo", "baz"),
-    "foo\"bar\"baz" to listOf("foobarbaz"),
-    "foo \"bar\"baz" to listOf("foo", "barbaz"),
-    "   foo \nbar" to listOf("foo", "bar"),
-    "foo\\\nbar" to listOf("foobar"),
-    "\"foo\\\nbar\"" to listOf("foobar"),
-    "'baz\\\$b'" to listOf("baz\\\$b"),
-    "'baz\\''" to null,
-    "\\" to null,
-    "\"\\" to null,
-    "'\\" to null,
-    "\"" to null,
-    "'" to null,
-    "foo #bar\nbaz" to listOf("foo", "baz"),
-    "foo #bar" to listOf("foo"),
-    "foo#bar" to listOf("foo#bar"),
-    "foo\"#bar" to null,
-    "'\\n'" to listOf("\\n"),
-    "'\\\\n'" to listOf("\\\\n"),
-)
+private val SPLIT_TEST_ITEMS: Array<Pair<String, List<String>?>> =
+    arrayOf(
+        "foo\$baz" to listOf("foo\$baz"),
+        "foo baz" to listOf("foo", "baz"),
+        "foo\"bar\"baz" to listOf("foobarbaz"),
+        "foo \"bar\"baz" to listOf("foo", "barbaz"),
+        "   foo \nbar" to listOf("foo", "bar"),
+        "foo\\\nbar" to listOf("foobar"),
+        "\"foo\\\nbar\"" to listOf("foobar"),
+        "'baz\\\$b'" to listOf("baz\\\$b"),
+        "'baz\\''" to null,
+        "\\" to null,
+        "\"\\" to null,
+        "'\\" to null,
+        "\"" to null,
+        "'" to null,
+        "foo #bar\nbaz" to listOf("foo", "baz"),
+        "foo #bar" to listOf("foo"),
+        "foo#bar" to listOf("foo#bar"),
+        "foo\"#bar" to null,
+        "'\\n'" to listOf("\\n"),
+        "'\\\\n'" to listOf("\\\\n"),
+    )
 
 class LibTest {
     @Test
@@ -56,7 +57,8 @@ class LibTest {
         // to read if we have to put the test strings through Kotlin escaping on top of the
         // escaping being tested. Ad-hoc: "NL" is replaced with a literal newline; no other
         // escape sequences.
-        val tests = """
+        val tests =
+            """
             <>                => <''>
             <foobar>          => <foobar>
             <foo bar>         => <'foo bar'>
@@ -82,13 +84,14 @@ class LibTest {
             <a..b             => <a..b>
             <'$>              => <"'"'$'>
             <"^>              => <'"''^'>
-        """.trimIndent()
+            """.trimIndent()
         var ok = true
         for (test in tests.trim().split('\n')) {
-            val parts = test
-                .replace("NL", "\n")
-                .split("=>")
-                .map { it.trim().trimStart('<').trimEnd('>') }
+            val parts =
+                test
+                    .replace("NL", "\n")
+                    .split("=>")
+                    .map { it.trim().trimStart('<').trimEnd('>') }
             check(parts.size == 2)
             val unquoted = parts[0]
             val quotedExpected = parts[1]

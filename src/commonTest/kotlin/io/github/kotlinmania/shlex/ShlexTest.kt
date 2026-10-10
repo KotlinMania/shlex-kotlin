@@ -5,28 +5,29 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-private val SPLIT_TEST_ITEMS: List<Pair<String, List<String>?>> = listOf(
-    "foo\$baz" to listOf("foo\$baz"),
-    "foo baz" to listOf("foo", "baz"),
-    "foo\"bar\"baz" to listOf("foobarbaz"),
-    "foo \"bar\"baz" to listOf("foo", "barbaz"),
-    "   foo \nbar" to listOf("foo", "bar"),
-    "foo\\\nbar" to listOf("foobar"),
-    "\"foo\\\nbar\"" to listOf("foobar"),
-    "'baz\\\$b'" to listOf("baz\\\$b"),
-    "'baz\\\''" to null,
-    "\\" to null,
-    "\"\\" to null,
-    "'\\" to null,
-    "\"" to null,
-    "'" to null,
-    "foo #bar\nbaz" to listOf("foo", "baz"),
-    "foo #bar" to listOf("foo"),
-    "foo#bar" to listOf("foo#bar"),
-    "foo\"#bar" to null,
-    "'\\n'" to listOf("\\n"),
-    "'\\\\n'" to listOf("\\\\n"),
-)
+private val SPLIT_TEST_ITEMS: List<Pair<String, List<String>?>> =
+    listOf(
+        "foo\$baz" to listOf("foo\$baz"),
+        "foo baz" to listOf("foo", "baz"),
+        "foo\"bar\"baz" to listOf("foobarbaz"),
+        "foo \"bar\"baz" to listOf("foo", "barbaz"),
+        "   foo \nbar" to listOf("foo", "bar"),
+        "foo\\\nbar" to listOf("foobar"),
+        "\"foo\\\nbar\"" to listOf("foobar"),
+        "'baz\\\$b'" to listOf("baz\\\$b"),
+        "'baz\\\''" to null,
+        "\\" to null,
+        "\"\\" to null,
+        "'\\" to null,
+        "\"" to null,
+        "'" to null,
+        "foo #bar\nbaz" to listOf("foo", "baz"),
+        "foo #bar" to listOf("foo"),
+        "foo#bar" to listOf("foo#bar"),
+        "foo\"#bar" to null,
+        "'\\n'" to listOf("\\n"),
+        "'\\\\n'" to listOf("\\\\n"),
+    )
 
 class ShlexTest {
     @Test
@@ -54,39 +55,41 @@ class ShlexTest {
         // it's hard to read if we have to put the test strings through escaping on top of the
         // escaping being tested.
         // Ad-hoc: "NL" is replaced with a literal newline; no other escape sequences.
-        val tests = """
-        <>                => <''>
-        <foobar>          => <foobar>
-        <foo bar>         => <'foo bar'>
-        <"foo bar'">      => <"\"foo bar'\"">
-        <'foo bar'>       => <"'foo bar'">
-        <">               => <'"'>
-        <"'>              => <"\"'">
-        <hello!world>     => <'hello!world'>
-        <'hello!world>    => <"'hello"'!world'>
-        <'hello!>         => <"'hello"'!'>
-        <hello ^ world>   => <'hello ''^ world'>
-        <hello^>          => <hello'^'>
-        <!world'>         => <'!world'"'">
-        <{a, b}>          => <'{a, b}'>
-        <NL>              => <'NL'>
-        <^>               => <'^'>
-        <foo^bar>         => <foo'^bar'>
-        <NLx^>            => <'NLx''^'>
-        <NL^x>            => <'NL''^x'>
-        <NL ^x>           => <'NL ''^x'>
-        <{a,b}>           => <'{a,b}'>
-        <a,b>             => <'a,b'>
-        <a..b             => <a..b>
-        <'${'$'}>              => <"'"'${'$'}'>
-        <"^>              => <'"''^'>
-        """.trimIndent()
+        val tests =
+            """
+            <>                => <''>
+            <foobar>          => <foobar>
+            <foo bar>         => <'foo bar'>
+            <"foo bar'">      => <"\"foo bar'\"">
+            <'foo bar'>       => <"'foo bar'">
+            <">               => <'"'>
+            <"'>              => <"\"'">
+            <hello!world>     => <'hello!world'>
+            <'hello!world>    => <"'hello"'!world'>
+            <'hello!>         => <"'hello"'!'>
+            <hello ^ world>   => <'hello ''^ world'>
+            <hello^>          => <hello'^'>
+            <!world'>         => <'!world'"'">
+            <{a, b}>          => <'{a, b}'>
+            <NL>              => <'NL'>
+            <^>               => <'^'>
+            <foo^bar>         => <foo'^bar'>
+            <NLx^>            => <'NLx''^'>
+            <NL^x>            => <'NL''^x'>
+            <NL ^x>           => <'NL ''^x'>
+            <{a,b}>           => <'{a,b}'>
+            <a,b>             => <'a,b'>
+            <a..b             => <a..b>
+            <'${'$'}>              => <"'"'${'$'}'>
+            <"^>              => <'"''^'>
+            """.trimIndent()
         var ok = true
         for (test in tests.trim().split('\n')) {
-            val parts: List<String> = test
-                .replace("NL", "\n")
-                .split("=>")
-                .map { part -> part.trim().trimStart('<').trimEnd('>') }
+            val parts: List<String> =
+                test
+                    .replace("NL", "\n")
+                    .split("=>")
+                    .map { part -> part.trim().trimStart('<').trimEnd('>') }
             assertTrue(parts.size == 2)
             val unquoted = parts[0]
             val quotedExpected = parts[1]

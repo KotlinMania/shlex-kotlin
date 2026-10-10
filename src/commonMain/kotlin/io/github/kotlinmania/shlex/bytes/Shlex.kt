@@ -24,7 +24,9 @@ typealias Item = ByteArray
  * An iterator that takes an input byte string and splits it into the words using the same syntax as
  * the POSIX shell.
  */
-class Shlex(private val inBytes: ByteArray) : Iterator<Item> {
+class Shlex(
+    private val inBytes: ByteArray,
+) : Iterator<Item> {
     private var pos: Int = 0
 
     /** The number of newlines read so far, plus one. */
@@ -46,14 +48,20 @@ class Shlex(private val inBytes: ByteArray) : Iterator<Item> {
         val result: MutableList<Byte> = mutableListOf()
         while (true) {
             when ((ch.toInt() and 0xFF).toChar()) {
-                '"' -> if (!parseDouble(result)) {
-                    hadError = true
-                    return null
+                '"' -> {
+                    if (!parseDouble(result)) {
+                        hadError = true
+                        return null
+                    }
                 }
-                '\'' -> if (!parseSingle(result)) {
-                    hadError = true
-                    return null
+
+                '\'' -> {
+                    if (!parseSingle(result)) {
+                        hadError = true
+                        return null
+                    }
                 }
+
                 '\\' -> {
                     val ch2 = nextChar()
                     if (ch2 != null) {
@@ -63,8 +71,14 @@ class Shlex(private val inBytes: ByteArray) : Iterator<Item> {
                         return null
                     }
                 }
-                ' ', '\t', '\n' -> return result.toByteArray()
-                else -> result.add(ch)
+
+                ' ', '\t', '\n' -> {
+                    return result.toByteArray()
+                }
+
+                else -> {
+                    result.add(ch)
+                }
             }
             val ch2 = nextChar() ?: return result.toByteArray()
             ch = ch2
@@ -79,9 +93,13 @@ class Shlex(private val inBytes: ByteArray) : Iterator<Item> {
                     val ch3 = nextChar() ?: return false
                     when ((ch3.toInt() and 0xFF).toChar()) {
                         // \$ => $
-                        '$', '`', '"', '\\' -> result.add(ch3)
+                        '$', '`', '"', '\\' -> {
+                            result.add(ch3)
+                        }
+
                         // \<newline> => nothing
                         '\n' -> { }
+
                         // \x => =x
                         else -> {
                             result.add('\\'.code.toByte())
@@ -89,8 +107,14 @@ class Shlex(private val inBytes: ByteArray) : Iterator<Item> {
                         }
                     }
                 }
-                '"' -> return true
-                else -> result.add(ch2)
+
+                '"' -> {
+                    return true
+                }
+
+                else -> {
+                    result.add(ch2)
+                }
             }
         }
     }
@@ -117,17 +141,24 @@ class Shlex(private val inBytes: ByteArray) : Iterator<Item> {
         var ch = nextChar() ?: return null
         // skip initial whitespace
         while (true) {
-            val isWhitespace = when ((ch.toInt() and 0xFF).toChar()) {
-                ' ', '\t', '\n' -> true
-                '#' -> {
-                    while (true) {
-                        val ch2 = nextChar() ?: break
-                        if ((ch2.toInt() and 0xFF).toChar() == '\n') break
+            val isWhitespace =
+                when ((ch.toInt() and 0xFF).toChar()) {
+                    ' ', '\t', '\n' -> {
+                        true
                     }
-                    true
+
+                    '#' -> {
+                        while (true) {
+                            val ch2 = nextChar() ?: break
+                            if ((ch2.toInt() and 0xFF).toChar() == '\n') break
+                        }
+                        true
+                    }
+
+                    else -> {
+                        false
+                    }
                 }
-                else -> false
-            }
             if (!isWhitespace) break
             ch = nextChar() ?: return null
         }

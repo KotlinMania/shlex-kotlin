@@ -434,12 +434,7 @@ kotlin {
         addToXcf()
     }
 
-    // iosX64: Intel Mac simulator. Tier 3 in Kotlin/Native but NOT deprecated —
-    // Apple still ships x86_64 iOS simulator runtimes, so it is always built.
-    iosX64 {
-        configureBenchmarkCompilation()
-        addToXcf(static = true)
-    }
+    // Apple targets use ARM64 only under the supported-platform policy.
 
     // Other native — Tier 1/2
     linuxX64 { configureBenchmarkCompilation() }
@@ -1093,7 +1088,6 @@ val nativeTargetNames =
         "androidNativeX64",
         "iosArm64",
         "iosSimulatorArm64",
-        "iosX64",
         "linuxArm64",
         "linuxX64",
         "macosArm64",

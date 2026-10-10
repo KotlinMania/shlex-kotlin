@@ -65,7 +65,7 @@ class Quoter(
             return Result.failure(QuoteError.Nul)
         }
         val out: MutableList<Byte> = mutableListOf()
-        var remaining = inBytes
+        val remaining = inBytes
         var offset = 0
         while (offset < remaining.size) {
             // Pick a quoting strategy for some prefix of the input.  Normally this will cover the

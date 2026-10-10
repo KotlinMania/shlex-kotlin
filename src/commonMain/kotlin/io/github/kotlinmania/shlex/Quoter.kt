@@ -14,7 +14,9 @@ import io.github.kotlinmania.shlex.bytes.Quoter as BytesQuoter
  *
  * The bytes equivalent is [io.github.kotlinmania.shlex.bytes.Quoter].
  */
-class Quoter private constructor(private val inner: BytesQuoter) {
+class Quoter private constructor(
+    private val inner: BytesQuoter,
+) {
     /** Create a new [Quoter] with default settings. */
     constructor() : this(BytesQuoter())
 
@@ -26,16 +28,16 @@ class Quoter private constructor(private val inner: BytesQuoter) {
      * Convenience function that consumes an iterable of words and turns it into a single string,
      * quoting words when necessary. Consecutive words will be separated by a single space.
      */
-    fun join(words: Iterable<String>): Result<String> {
-        return inner.join(words.map { it.encodeToByteArray() })
+    fun join(words: Iterable<String>): Result<String> =
+        inner
+            .join(words.map { it.encodeToByteArray() })
             .map { it.decodeToString() }
-    }
 
     /** Given a single word, return a string suitable to encode it as a shell argument. */
-    fun quote(inStr: String): Result<String> {
-        return inner.quote(inStr.encodeToByteArray())
+    fun quote(inStr: String): Result<String> =
+        inner
+            .quote(inStr.encodeToByteArray())
             .map { it.decodeToString() }
-    }
 
     /** Returns the underlying [io.github.kotlinmania.shlex.bytes.Quoter]. */
     fun toBytesQuoter(): BytesQuoter = inner

@@ -86,28 +86,35 @@ internal fun unquotedOkFast(c: Byte): Boolean {
 }
 
 /** Is this ASCII byte okay to emit in single quotes? */
-internal fun singleQuotedOk(c: Byte): Boolean = when (c) {
-    // No single quotes in single quotes.
-    '\''.code.toByte() -> false
-    // To work around a Bash bug, ^ is only allowed right after an opening single quote; see
-    // the quoting warning.
-    '^'.code.toByte() -> false
-    // Backslashes in single quotes are literal according to POSIX, but Fish treats them as an
-    // escape character.  Ban them.  Fish doesn't aim to be POSIX-compatible, but we *can*
-    // achieve Fish compatibility using double quotes, so we might as well.
-    '\\'.code.toByte() -> false
-    else -> true
-}
+internal fun singleQuotedOk(c: Byte): Boolean =
+    when (c) {
+        // No single quotes in single quotes.
+        '\''.code.toByte() -> false
+
+        // To work around a Bash bug, ^ is only allowed right after an opening single quote; see
+        // the quoting warning.
+        '^'.code.toByte() -> false
+
+        // Backslashes in single quotes are literal according to POSIX, but Fish treats them as an
+        // escape character.  Ban them.  Fish doesn't aim to be POSIX-compatible, but we *can*
+        // achieve Fish compatibility using double quotes, so we might as well.
+        '\\'.code.toByte() -> false
+
+        else -> true
+    }
 
 /** Is this ASCII byte okay to emit in double quotes? */
-internal fun doubleQuotedOk(c: Byte): Boolean = when (c) {
-    // Work around Python `shlex` bug where parsing "\`" and "\$" doesn't strip the
-    // backslash, even though POSIX requires it.
-    '`'.code.toByte(), '$'.code.toByte() -> false
-    // '!' and '^' are treated specially in interactive mode; see the quoting warning.
-    '!'.code.toByte(), '^'.code.toByte() -> false
-    else -> true
-}
+internal fun doubleQuotedOk(c: Byte): Boolean =
+    when (c) {
+        // Work around Python `shlex` bug where parsing "\`" and "\$" doesn't strip the
+        // backslash, even though POSIX requires it.
+        '`'.code.toByte(), '$'.code.toByte() -> false
+
+        // '!' and '^' are treated specially in interactive mode; see the quoting warning.
+        '!'.code.toByte(), '^'.code.toByte() -> false
+
+        else -> true
+    }
 
 /**
  * Given an input, return a quoting strategy that can cover some prefix of the string, along with
@@ -165,12 +172,13 @@ internal fun quotingStrategy(inBytes: ByteArray): Pair<Int, QuotingStrategy> {
     }
 
     // Pick the best allowed strategy.
-    val strategy = when {
-        prevOk and unquotedOkBit != 0 -> QuotingStrategy.Unquoted
-        prevOk and singleQuotedOkBit != 0 -> QuotingStrategy.SingleQuoted
-        prevOk and doubleQuotedOkBit != 0 -> QuotingStrategy.DoubleQuoted
-        else -> error("unreachable")
-    }
+    val strategy =
+        when {
+            prevOk and unquotedOkBit != 0 -> QuotingStrategy.Unquoted
+            prevOk and singleQuotedOkBit != 0 -> QuotingStrategy.SingleQuoted
+            prevOk and doubleQuotedOkBit != 0 -> QuotingStrategy.DoubleQuoted
+            else -> error("unreachable")
+        }
     check(i > 0) // Upstream invariant: returned size is nonzero.
     return i to strategy
 }
@@ -180,18 +188,21 @@ internal fun appendQuotedChunk(out: MutableList<Byte>, curChunk: ByteArray, stra
         QuotingStrategy.Unquoted -> {
             for (b in curChunk) out.add(b)
         }
+
         QuotingStrategy.SingleQuoted -> {
             out.add('\''.code.toByte())
             for (b in curChunk) out.add(b)
             out.add('\''.code.toByte())
         }
+
         QuotingStrategy.DoubleQuoted -> {
             out.add('"'.code.toByte())
             for (c in curChunk) {
                 if (c == '$'.code.toByte() ||
                     c == '`'.code.toByte() ||
                     c == '"'.code.toByte() ||
-                    c == '\\'.code.toByte()) {
+                    c == '\\'.code.toByte()
+                ) {
                     // Add a preceding backslash.
                     // Note: We shouldn't actually get here for $ and ` because they don't pass
                     // [doubleQuotedOk].

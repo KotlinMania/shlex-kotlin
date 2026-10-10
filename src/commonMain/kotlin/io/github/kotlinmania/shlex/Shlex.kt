@@ -50,7 +50,9 @@ typealias Target = BytesShlex
  *
  * See [io.github.kotlinmania.shlex.bytes.Shlex].
  */
-class Shlex(inStr: String) : Iterator<Item> {
+class Shlex(
+    inStr: String,
+) : Iterator<Item> {
     private val inner: Target = BytesShlex(inStr.encodeToByteArray())
 
     val lineNo: Int get() = inner.lineNo
@@ -59,6 +61,7 @@ class Shlex(inStr: String) : Iterator<Item> {
     override fun hasNext(): Boolean = inner.hasNext()
 
     override fun next(): String {
+        if (!hasNext()) throw NoSuchElementException()
         val byteWord = inner.next()
         return byteWord.decodeToString()
     }

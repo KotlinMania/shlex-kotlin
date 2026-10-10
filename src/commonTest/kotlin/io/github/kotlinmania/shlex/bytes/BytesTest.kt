@@ -15,31 +15,31 @@ private val INVALID_UTF8_SINGLEQUOTED: ByteArray =
     byteArrayOf('\''.code.toByte(), 0xa1.toByte(), '\''.code.toByte())
 
 private fun bs(s: String): ByteArray = s.encodeToByteArray()
-private fun bsArr(vararg s: String): List<ByteArray> = s.map { it.encodeToByteArray() }
 
-private val SPLIT_TEST_ITEMS: List<Pair<ByteArray, List<ByteArray>?>> = listOf(
-    bs("foo\$baz") to listOf(bs("foo\$baz")),
-    bs("foo baz") to listOf(bs("foo"), bs("baz")),
-    bs("foo\"bar\"baz") to listOf(bs("foobarbaz")),
-    bs("foo \"bar\"baz") to listOf(bs("foo"), bs("barbaz")),
-    bs("   foo \nbar") to listOf(bs("foo"), bs("bar")),
-    bs("foo\\\nbar") to listOf(bs("foobar")),
-    bs("\"foo\\\nbar\"") to listOf(bs("foobar")),
-    bs("'baz\\\$b'") to listOf(bs("baz\\\$b")),
-    bs("'baz\\\''") to null,
-    bs("\\") to null,
-    bs("\"\\") to null,
-    bs("'\\") to null,
-    bs("\"") to null,
-    bs("'") to null,
-    bs("foo #bar\nbaz") to listOf(bs("foo"), bs("baz")),
-    bs("foo #bar") to listOf(bs("foo")),
-    bs("foo#bar") to listOf(bs("foo#bar")),
-    bs("foo\"#bar") to null,
-    bs("'\\n'") to listOf(bs("\\n")),
-    bs("'\\\\n'") to listOf(bs("\\\\n")),
-    INVALID_UTF8 to listOf(INVALID_UTF8),
-)
+private val SPLIT_TEST_ITEMS: List<Pair<ByteArray, List<ByteArray>?>> =
+    listOf(
+        bs("foo\$baz") to listOf(bs("foo\$baz")),
+        bs("foo baz") to listOf(bs("foo"), bs("baz")),
+        bs("foo\"bar\"baz") to listOf(bs("foobarbaz")),
+        bs("foo \"bar\"baz") to listOf(bs("foo"), bs("barbaz")),
+        bs("   foo \nbar") to listOf(bs("foo"), bs("bar")),
+        bs("foo\\\nbar") to listOf(bs("foobar")),
+        bs("\"foo\\\nbar\"") to listOf(bs("foobar")),
+        bs("'baz\\\$b'") to listOf(bs("baz\\\$b")),
+        bs("'baz\\\''") to null,
+        bs("\\") to null,
+        bs("\"\\") to null,
+        bs("'\\") to null,
+        bs("\"") to null,
+        bs("'") to null,
+        bs("foo #bar\nbaz") to listOf(bs("foo"), bs("baz")),
+        bs("foo #bar") to listOf(bs("foo")),
+        bs("foo#bar") to listOf(bs("foo#bar")),
+        bs("foo\"#bar") to null,
+        bs("'\\n'") to listOf(bs("\\n")),
+        bs("'\\\\n'") to listOf(bs("\\\\n")),
+        INVALID_UTF8 to listOf(INVALID_UTF8),
+    )
 
 class BytesTest {
     @Test

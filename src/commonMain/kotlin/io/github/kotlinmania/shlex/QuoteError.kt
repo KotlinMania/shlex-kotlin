@@ -20,7 +20,9 @@ package io.github.kotlinmania.shlex
  * will be mitigated by adding corresponding [QuoteError] variants that *are* enabled by
  * default.
  */
-sealed class QuoteError(override val message: String) : Throwable(message) {
+sealed class QuoteError(
+    override val message: String,
+) : Throwable(message) {
     fun fmt(): String = message
 
     override fun toString(): String = fmt()

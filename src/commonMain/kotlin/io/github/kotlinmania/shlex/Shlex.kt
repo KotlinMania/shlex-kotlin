@@ -1,4 +1,3 @@
-// port-lint: source lib.rs
 package io.github.kotlinmania.shlex
 
 // Copyright 2015 Nicholas Allegra (comex).

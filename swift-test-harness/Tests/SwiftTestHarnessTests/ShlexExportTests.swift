@@ -1,10 +1,9 @@
-import Testing
+import XCTest
 import Shlex
 
-@Suite("Shlex Swift Export Tests")
-struct ShlexExportTests {
-    @Test("Swift module loads")
-    func swiftModuleLoads() {
-        #expect(true, "Shlex swift module imported cleanly")
+final class ShlexExportTests: XCTestCase {
+    func testSwiftModuleLoads() throws {
+        XCTAssertTrue(true, "Shlex swift module imported cleanly")
     }
 }
+

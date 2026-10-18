@@ -34,7 +34,6 @@ import java.util.zip.ZipInputStream
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.android.kmp)
     alias(libs.plugins.detekt)
     alias(libs.plugins.ktlint)
@@ -567,10 +566,6 @@ kotlin {
     swiftExport {
         moduleName = frameworkName
         flattenPackage = projectNamespace
-        @OptIn(org.jetbrains.kotlin.gradle.swiftexport.ExperimentalSwiftExportDsl::class)
-        configure {
-            settings.put("enableCoroutinesSupport", "true")
-        }
     }
 
     // Android KMP library. Block name is `android` — `androidLibrary` is deprecated in current KGP.
@@ -1573,17 +1568,6 @@ tasks.matching { it.name.contains("GenerateSPMPackage") }.configureEach {
                         .replace("Foundation.NSOutputStream", "Foundation.OutputStream")
                 if (renamed != text) {
                     file.writeText(renamed)
-                }
-            }
-            spmDir.walkTopDown().filter { it.name == "OrgJetbrainsKotlinxKotlinxSerializationCore.swift" }.forEach { file ->
-                val text = file.readText()
-                val cleaned =
-                    text.replace(
-                        Regex("""@_spi\([^)]+\)\s+public func (?:decodeSequentially|shouldEncodeElementDefault|encodeNotNullMark)\([^)]*\)(?:\s*->\s*[^\n{]+)?\s*\{\s*fatalError\([^)]+\)\s*\}"""),
-                        "",
-                    )
-                if (cleaned != text) {
-                    file.writeText(cleaned)
                 }
             }
         }
